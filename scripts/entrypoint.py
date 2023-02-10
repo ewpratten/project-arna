@@ -43,8 +43,13 @@ def main():
     print("Copying needed config files")
     copy_config_with_env_vars(RAW_CONFIGS_ROOT / "bird" / "bird.conf",
                               Path("/etc/bird/bird.conf"))
+    
+    # Launch Caddy in the background
+    print("Launching Caddy")
+    subprocess.run(["caddy", "start", "--config", "/etc/caddy/Caddyfile"])
 
     # Launch bird in the foreground
+    print("Launching Bird")
     subprocess.run(["bird", "-f", "-d", "-c", "/etc/bird/bird.conf"])
 
 
