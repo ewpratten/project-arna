@@ -1,3 +1,6 @@
 44.31.119.1:80 {
     respond "This is an Anycasted Project ARNA node that is peering with {$PEER_ASN}. More information: https://github.com/ewpratten/project-arna"
 }
+44.31.119.3:80 {
+    reverse_proxy 44.31.119.3:8888
+}

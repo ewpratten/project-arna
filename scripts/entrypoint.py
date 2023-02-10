@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 
 # Variables that must be passed through to config files
-CONFIG_ENV_PASSTHROUGH_KEYS = ["PEER_ASN", "PEER_IP"]
+CONFIG_ENV_PASSTHROUGH_KEYS = ["PEER_ASN", "PEER_IP", "PEER_NAME"]
 
 # Location of configs that need substitution
 RAW_CONFIGS_ROOT = Path("/etc/arna")
@@ -27,7 +27,6 @@ def copy_config_with_env_vars(source: Path, dest: Path):
 
     # Write the config to the destination
     with open(dest, "w") as f:
-        print(config)
         f.write(config)
 
 
@@ -37,6 +36,7 @@ def main():
     print("Creating dummy network interface")
     subprocess.run(["ip", "link", "add", "arnaLoop", "type", "dummy"])
     subprocess.run(["ip", "addr", "add", "44.31.119.1/24", "dev", "arnaLoop"])
+    subprocess.run(["ip", "addr", "add", "44.31.119.3/24", "dev", "arnaLoop"])
     subprocess.run(["ip", "link", "set", "arnaLoop", "up"])
 
     # Copy appropriate config files
@@ -44,9 +44,11 @@ def main():
     copy_config_with_env_vars(RAW_CONFIGS_ROOT / "bird" / "bird.conf",
                               Path("/etc/bird/bird.conf"))
     
-    # Launch Caddy in the background
+    # Launch background services
     print("Launching Caddy")
     subprocess.run(["caddy", "start", "--config", "/etc/caddy/Caddyfile"])
+    print("Launching APRSC")
+    subprocess.Popen(["/opt/aprsc/sbin/aprsc", "-c", "/etc/aprsc/aprsc.conf", "-u", "aprsc", "-p", "/tmp/aprsc.pid"])
 
     # Launch bird in the foreground
     print("Launching Bird")
