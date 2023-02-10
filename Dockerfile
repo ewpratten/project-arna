@@ -5,6 +5,7 @@ RUN apt-get update -y
 RUN apt-get install -y bird2
 RUN apt-get install -y python3
 RUN apt-get install -y iproute2
+RUN apt-get install -y default-jre
 
 # Install Caddy
 RUN apt-get install -y debian-keyring debian-archive-keyring apt-transport-https curl
@@ -27,6 +28,9 @@ RUN ln -s /opt/aprsc/web /web
 # Set up directories for bird
 RUN mkdir /run/bird
 
+# Copy the echolink JAR
+COPY ./scripts/EchoLinkProxy.jar /usr/local/bin/EchoLinkProxy.jar
+
 # Copy the entrypoint script
 COPY ./scripts/entrypoint.py /usr/local/bin/entrypoint.py
 RUN chmod +x /usr/local/bin/entrypoint.py
@@ -35,6 +39,9 @@ RUN chmod +x /usr/local/bin/entrypoint.py
 COPY ./configs/bird/bird.conf /etc/arna/bird/bird.conf
 COPY ./configs/caddy/Caddyfile /etc/caddy/Caddyfile
 COPY ./configs/aprsc/aprsc.conf /etc/aprsc/aprsc.conf
+COPY ./configs/echolink/ELProxy-01.conf /etc/arna/echolink/ELProxy-01.conf
+COPY ./configs/echolink/ELProxy-02.conf /etc/arna/echolink/ELProxy-02.conf
+COPY ./configs/echolink/ELProxy-03.conf /etc/arna/echolink/ELProxy-03.conf
 
 # Run everything 
 ENTRYPOINT ["/usr/local/bin/entrypoint.py"]
