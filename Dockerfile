@@ -14,16 +14,16 @@ RUN curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | t
 RUN apt-get -y update
 RUN apt-get install -y caddy
 
-# Install APRSC
-RUN echo "deb http://aprsc-dist.he.fi/aprsc/apt bullseye main" > /etc/apt/sources.list.d/aprsc.list
-RUN gpg --keyserver keyserver.ubuntu.com --recv C51AA22389B5B74C3896EF3CA72A581E657A2B8D
-RUN gpg --export C51AA22389B5B74C3896EF3CA72A581E657A2B8D | apt-key add -
-RUN apt-get -y update
-RUN apt-get install -y aprsc
-RUN mkdir /tmp/aprs_data
+# # Install APRSC
+# RUN echo "deb http://aprsc-dist.he.fi/aprsc/apt bullseye main" > /etc/apt/sources.list.d/aprsc.list
+# RUN gpg --keyserver keyserver.ubuntu.com --recv C51AA22389B5B74C3896EF3CA72A581E657A2B8D
+# RUN gpg --export C51AA22389B5B74C3896EF3CA72A581E657A2B8D | apt-key add -
+# RUN apt-get -y update
+# RUN apt-get install -y aprsc
+# RUN mkdir /tmp/aprs_data
 
-# Link /web to /opt/aprsc/web
-RUN ln -s /opt/aprsc/web /web
+# # Link /web to /opt/aprsc/web
+# RUN ln -s /opt/aprsc/web /web
 
 # Set up directories for bird
 RUN mkdir /run/bird

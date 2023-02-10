@@ -50,11 +50,11 @@ def main():
     # Launch background services
     print("Launching Caddy")
     subprocess.run(["caddy", "start", "--config", "/etc/caddy/Caddyfile"])
-    print("Launching APRSC")
-    subprocess.Popen([
-        "/opt/aprsc/sbin/aprsc", "-c", "/etc/aprsc/aprsc.conf", "-u", "aprsc",
-        "-p", "/tmp/aprsc.pid"
-    ])
+    # print("Launching APRSC")
+    # subprocess.Popen([
+    #     "/opt/aprsc/sbin/aprsc", "-c", "/etc/aprsc/aprsc.conf", "-u", "aprsc",
+    #     "-p", "/tmp/aprsc.pid"
+    # ])
 
     # Spawn each echolink server
     for i in range(3):
